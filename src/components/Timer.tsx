@@ -3,7 +3,7 @@ import { Icon } from "@iconify-icon/solid";
 
 export default function Timer() {
   const TOTAL_TIME = 10 * 60; // 10 minutes in seconds
-  const INTRO_DURATION = 120; // 2 minutes intro
+  const INTRO_DURATION = 30; // 30 seconds intro
 
   // State
   const [timeRemaining, setTimeRemaining] = createSignal(TOTAL_TIME);
