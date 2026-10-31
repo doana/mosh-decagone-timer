@@ -3,7 +3,8 @@ import { Icon } from "@iconify-icon/solid";
 
 export default function Timer() {
   const TOTAL_TIME = 10 * 60; // 10 minutes in seconds
-  const INTRO_DURATION = 30; // 30 seconds intro
+  const INTRO_DURATION = 120; // 120 seconds intro
+  const SHORT_INTRO_SKIP = 90;
 
   // State
   const [timeRemaining, setTimeRemaining] = createSignal(TOTAL_TIME);
@@ -85,6 +86,7 @@ export default function Timer() {
     setTimerStarted(false);
     setTimeRemaining(TOTAL_TIME);
     setStatusMessage("In progress");
+    if(audioRef) audioRef.currentTime = SHORT_INTRO_SKIP;
   };
 
   // Control handlers
@@ -132,7 +134,7 @@ export default function Timer() {
 
     setIsRunning(false);
     audioRef.pause();
-    audioRef.currentTime = 0;
+    audioRef.currentTime = SHORT_INTRO_SKIP;
 
     if (intervalId) {
       clearInterval(intervalId);
@@ -281,49 +283,47 @@ export default function Timer() {
       <div style={{ "margin-top": "1rem" }}>{statusMessage()}</div>
 
       {/* Testing controls - only in development */}
-      {import.meta.env.DEV && (
-        <details style={{ "margin-top": "2rem", width: "100%" }}>
-          <summary
-            style={{
-              cursor: "pointer",
-              padding: "0.5rem",
-              border: "1px solid var(--accent)",
-              background: "var(--background)",
-              "text-align": "center",
-            }}
-          >
-            Local Dev Testing: Jump to Time
-          </summary>
-          <div
-            style={{
-              display: "flex",
-              gap: "0.5rem",
-              "flex-wrap": "wrap",
-              "justify-content": "center",
-              padding: "1rem",
-              border: "1px solid var(--accent)",
-              "border-top": "none",
-              background: "var(--background)",
-            }}
-          >
-            <button onClick={() => handleTimeJump(10)}>10:00</button>
-            <button onClick={() => handleTimeJump(9)}>9:00</button>
-            <button onClick={() => handleTimeJump(8)}>8:00</button>
-            <button onClick={() => handleTimeJump(7)}>7:00</button>
-            <button onClick={() => handleTimeJump(6)}>6:00</button>
-            <button onClick={() => handleTimeJump(5)}>5:00</button>
-            <button onClick={() => handleTimeJump(4)}>4:00</button>
-            <button onClick={() => handleTimeJump(3)}>3:00</button>
-            <button onClick={() => handleTimeJump(2)}>2:00</button>
-            <button onClick={() => handleTimeJump(1)}>1:00</button>
-            <button onClick={() => handleTimeJump(0)}>0:00</button>
-          </div>
-        </details>
-      )}
+      <details style={{ "margin-top": "2rem", width: "100%" }}>
+        <summary
+          style={{
+            cursor: "pointer",
+            padding: "0.5rem",
+            border: "1px solid var(--accent)",
+            background: "var(--background)",
+            "text-align": "center",
+          }}
+        >
+          Jump to Time?
+        </summary>
+        <div
+          style={{
+            display: "flex",
+            gap: "0.5rem",
+            "flex-wrap": "wrap",
+            "justify-content": "center",
+            padding: "1rem",
+            border: "1px solid var(--accent)",
+            "border-top": "none",
+            background: "var(--background)",
+          }}
+        >
+          <button onClick={() => handleTimeJump(10)}>10:00</button>
+          <button onClick={() => handleTimeJump(9)}>9:00</button>
+          <button onClick={() => handleTimeJump(8)}>8:00</button>
+          <button onClick={() => handleTimeJump(7)}>7:00</button>
+          <button onClick={() => handleTimeJump(6)}>6:00</button>
+          <button onClick={() => handleTimeJump(5)}>5:00</button>
+          <button onClick={() => handleTimeJump(4)}>4:00</button>
+          <button onClick={() => handleTimeJump(3)}>3:00</button>
+          <button onClick={() => handleTimeJump(2)}>2:00</button>
+          <button onClick={() => handleTimeJump(1)}>1:00</button>
+          <button onClick={() => handleTimeJump(0)}>0:00</button>
+        </div>
+      </details>
 
       <audio ref={audioRef} loop>
         <source
-          src={`${import.meta.env.BASE_URL}/DecagoneTimer.mp3`}
+          src={`${import.meta.env.SITE}${import.meta.env.BASE_URL}/DecagoneTimer.mp3`}
           type="audio/mpeg"
         />
         Your browser does not support the audio element.
